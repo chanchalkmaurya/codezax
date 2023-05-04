@@ -39,6 +39,8 @@ DATABASE_PORT=your_database_port_here
 python manage.py migrate
 ```
 
+
+
 ## Usage
 1. Run the development server.
 ```
@@ -48,6 +50,19 @@ python manage.py runserver
 2. Open the browser and go to http://localhost:8000/ to view the project.
 
 
+## Backend Usage
+1. Super user creation
+```
+python manage.py createsuperuser
+```
+
+2. Run the deployment server, if not running:
+```
+python manage.py runserver
+```
+3. Open the browser and go to http://localhost:8000/admin to view the admin pannel.
+4. Open the Models to add data.
+5. changes will be reflected when you add data in Posts, Author, SocialMediahandles.
 
 ## Contributing
 1. Fork the repository.

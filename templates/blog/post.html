@@ -1,0 +1,185 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+<!-- Title of the page-->
+{% block title %} {% endblock title %}
+
+<!--Link extra CSS files here-->
+{% block css %}
+    
+{% endblock css %}
+
+
+<!-- Content of body-->
+{% block content %}
+    <!-- Begin Article
+    ================================================== -->
+    <div class="container">
+        <div class="row">
+            <!-- Begin Fixed Left Share -->
+            <div class="col-md-2 col-xs-12">
+                <div class="share">
+                    <p>
+                        Author
+                    </p>
+                    <ul>
+                        <!-- twitter -->
+                        <li>
+                            {% if  social_handles.instagram %}
+                            <a  target="_blank" href="{{social_handles.instagram}}"><img  src ="{% static 'blog/img/instagram.svg' %}" alt="Instagram" height = "20"/> 
+                            {% endif %}
+                        </li>
+                        <li>
+                            <!-- display Twitter icon when url is present for that user-->
+                            {% if  social_handles.twitter %}
+                            <a  target="_blank" href="{{social_handles.twitter}}"><img  src ="{% static 'blog/img/twitter.svg' %}" alt="Linkedin" height = "20"/></a>
+                            {% endif %}
+                        </li>  
+                        <li>
+                            <!-- display LinkedIn icon when url is present for that user-->
+                            {% if  social_handles.linkedin %}
+                            <a target="_blank" href="{{social_handles.linkedin}}"><img  src ="{% static 'blog/img/linkedin.svg' %}" alt="Linkedin" height = "20"/></a>
+                            {% endif %} 
+                            
+                        </li>
+                        
+                    </ul>
+                    <!-- starts here: commenting for now, for likes and comment feature ===========
+                    <div class="sep">
+                    </div>
+                    <p>
+                        Talk
+                    </p>
+                    <ul>
+                        <li>
+                        <a href="#comments">
+                        42<br/>
+                        <svg class="svgIcon-use" width="29" height="29" viewbox="0 0 29 29"><path d="M21.27 20.058c1.89-1.826 2.754-4.17 2.754-6.674C24.024 8.21 19.67 4 14.1 4 8.53 4 4 8.21 4 13.384c0 5.175 4.53 9.385 10.1 9.385 1.007 0 2-.14 2.95-.41.285.25.592.49.918.7 1.306.87 2.716 1.31 4.19 1.31.276-.01.494-.14.6-.36a.625.625 0 0 0-.052-.65c-.61-.84-1.042-1.71-1.282-2.58a5.417 5.417 0 0 1-.154-.75zm-3.85 1.324l-.083-.28-.388.12a9.72 9.72 0 0 1-2.85.424c-4.96 0-8.99-3.706-8.99-8.262 0-4.556 4.03-8.263 8.99-8.263 4.95 0 8.77 3.71 8.77 8.27 0 2.25-.75 4.35-2.5 5.92l-.24.21v.32c0 .07 0 .19.02.37.03.29.1.6.19.92.19.7.49 1.4.89 2.08-.93-.14-1.83-.49-2.67-1.06-.34-.22-.88-.48-1.16-.74z"></path></svg>
+                        </a>
+                        </li>
+                    </ul>
+                     =============== ends here-->
+                </div>
+            </div>
+            <!-- End Fixed Left Share -->
+            
+            <!-- Begin Post -->
+            <div class="col-md-8 col-md-offset-2 col-xs-12">
+                <div class="mainheading">
+                        {% if  author %}
+                        <!-- Begin Top Meta -->
+                        <div class="row post-top-meta">
+                            <div class="col-md-2">
+                                <a href="{% url 'author_detail' author.user_id %}"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
+                            </div>
+                            <div class="col-md-10">
+                                <a class="link-dark" href="{% url 'author_detail' author.user_id %}">{{author.name}}</a><!-- <a href="#" class="btn follow">Follow</a> -->
+                                <span class="author-description">{{author.bio|truncatechars:250}}</span>
+                                <span class="post-date">{{post.posted_date}}</span><span class="dot"></span> <!-- <span class="post-read">6 min read</span> -->
+                            </div>
+                        </div>
+                        <!-- End Top Menta -->
+                        {% endif %}
+                  
+
+                    <h1 class="posttitle">{{post.title}}</h1>
+
+                </div>
+
+                <!-- Begin Featured Image -->
+                <img class="featured-image img-fluid" src="{{post.featured_image.url}}" alt="">
+                <!-- End Featured Image -->
+
+                <!-- Begin Post Content -->
+                <div class="article-post">
+                    <p>
+                        {{post.content|truncatewords:100}}
+                    </p>
+                    
+                </div>
+                <!-- End Post Content -->
+
+                <!-- Begin Tags -->
+                <div class="after-post-tags">
+                    <ul class="tags">
+                        <li><a href="{{post.medium_url}}" target="_blank">Read More</a></li>
+                        
+                    </ul>
+                </div>
+                <!-- End Tags -->
+
+            </div>
+            <!-- End Post -->
+
+        </div>
+    </div>
+    <!-- End Article
+    ================================================== -->
+
+    <div class="hideshare"></div>
+
+    <!-- Begin Related
+    ================================================== -->
+    <div class="graybg">
+        <div class="container">
+            <div class="row listrecent listrelated">
+
+                {% for other_post in all_post_of_author|slice:':3' %}
+                <!-- begin post -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <a href="{% url 'post_detail' other_post.blog_id %}">
+                        <img class="img-fluid img-thumb" src="{{other_post.featured_image.url}}" alt="">
+                        </a>
+                        <div class="card-block">
+                            <h2 class="card-title"><a href="{% url 'post_detail' other_post.blog_id %}">{{other_post.title|truncatechars:45}}</a></h2>
+                            <div class="metafooter">
+                                <div class="wrapfooter">
+                                    {% if author %}
+                                    <span class="meta-footer-thumb">
+                                    
+                                    <a href="{% url 'author_detail' author.user_id %}"><img class="author-thumb" src="{{author.author_image.url}}" alt="Author Name"></a>
+                                    </span>
+                                    <span class="author-meta">
+                                    <span class="post-name"><a href="{% url 'author_detail' author.user_id %}">{{author.author_name}}</a></span><br/>
+                                    <span class="post-date">{{other_post.posted_date}}</span> <!-- <span class="dot"></span><span class="post-read">6 min read</span> -->
+                                    </span>
+                                    <!-- Save icon button hiding-->
+                                    <!-- 
+                                    <span class="post-read-more"><a href="post.html" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
+                                    -->
+                                    {% endif %}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end post -->
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- End Related Posts
+    ================================================== -->
+
+    <!-- Begin Twitter Timeline
+    ================================================== -->
+    <div class="container margtop3rem">
+        <a class="twitter-grid" href="{{codezax_handles.youtube}}">Follow us on Youtube</a> &nbsp;
+        <a class="twitter-grid" href="{{codezax_handles.linkedin}}">Follow us on LinkedIn</a> &nbsp;
+        <a class="twitter-grid" href="{{codezax_handles.twitter}}">Follow us on Twitter</a> <br>
+    </div>
+    <!-- End Twitter Timeline
+    ================================================== -->
+
+    <!-- Begin AlertBar
+    ================================================== -->
+    <div class="alertbar">
+        <div class="container text-center">
+            <img src="assets/img/logo.png" alt=""> &nbsp; Never miss a <b>story</b> from us, get weekly updates in your inbox. <a href="#" class="btn subscribe">Get Updates</a>
+        </div>
+    </div>
+    <!-- End AlertBar
+    ================================================== -->
+{% endblock content %}

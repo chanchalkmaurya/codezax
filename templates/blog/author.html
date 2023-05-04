@@ -1,0 +1,169 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+<!-- Title of the page-->
+{% block title %} {% endblock title %}
+
+<!--Link CSS files here-->
+{% block css %}
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/mediumish.css" rel="stylesheet">
+{% endblock css %}
+
+
+<!-- Content of body-->
+{% block content %}
+    {% if  author %}
+    <!-- Begin Top Author Page
+    ================================================== -->
+    <div class="container">
+        <div class="row">
+            <!-- Begin Fixed Left Share -->
+            <div class="col-md-1 col-xs-12">
+                <div class="share">
+                    <p>
+                        Author
+                    </p>
+                    <ul>
+                        <!-- twitter -->
+                        <li>
+                            {% if  socials.instagram %}
+                            <a  target="_blank" href="{{socials.instagram}}"><img  src ="{% static 'blog/img/instagram.svg' %}" alt="Instagram" height = "20"/> 
+                            {% endif %}
+                        </li>
+                        <li>
+                            <!-- display Twitter icon when url is present for that user-->
+                            {% if  socials.twitter %}
+                            <a  target="_blank" href="{{socials.twitter}}"><img  src ="{% static 'blog/img/twitter.svg' %}" alt="Linkedin" height = "20"/></a>
+                            {% endif %}
+                        </li>  
+                        <li>
+                            <!-- display LinkedIn icon when url is present for that user-->
+                            {% if  socials.linkedin %}
+                            <a target="_blank" href="{{socials.linkedin}}"><img  src ="{% static 'blog/img/linkedin.svg' %}" alt="Linkedin" height = "20"/></a>
+                            {% endif %} 
+                        </li>
+                      
+                        <li>
+                            <!-- display Twitter icon when url is present for that user-->
+                            {% if  socials.medium %}
+                            <a  target="_blank" href="{{socials.medium}}"><img  src ="{% static 'blog/img/medium.svg' %}" alt="Medium" height = "20"/></a>
+                            {% endif %}
+                        </li>  
+                        <li>
+                            <!-- display github icon when url is present for that user-->
+                            {% if  socials.github %}
+                            <a target="_blank" href="{{socials.github}}"><img  src ="{% static 'blog/img/github.svg' %}" alt="Github" height = "20"/></a>
+                            {% endif %} 
+                        </li>                        
+                    </ul>
+                    <!-- starts here: commenting for now, for likes and comment feature ===========
+                    <div class="sep">
+                    </div>
+                    <p>
+                        Talk
+                    </p>
+                    <ul>
+                        <li>
+                        <a href="#comments">
+                        42<br/>
+                        <svg class="svgIcon-use" width="29" height="29" viewbox="0 0 29 29"><path d="M21.27 20.058c1.89-1.826 2.754-4.17 2.754-6.674C24.024 8.21 19.67 4 14.1 4 8.53 4 4 8.21 4 13.384c0 5.175 4.53 9.385 10.1 9.385 1.007 0 2-.14 2.95-.41.285.25.592.49.918.7 1.306.87 2.716 1.31 4.19 1.31.276-.01.494-.14.6-.36a.625.625 0 0 0-.052-.65c-.61-.84-1.042-1.71-1.282-2.58a5.417 5.417 0 0 1-.154-.75zm-3.85 1.324l-.083-.28-.388.12a9.72 9.72 0 0 1-2.85.424c-4.96 0-8.99-3.706-8.99-8.262 0-4.556 4.03-8.263 8.99-8.263 4.95 0 8.77 3.71 8.77 8.27 0 2.25-.75 4.35-2.5 5.92l-.24.21v.32c0 .07 0 .19.02.37.03.29.1.6.19.92.19.7.49 1.4.89 2.08-.93-.14-1.83-.49-2.67-1.06-.34-.22-.88-.48-1.16-.74z"></path></svg>
+                        </a>
+                        </li>
+                    </ul>
+                     =============== ends here-->
+                </div>
+            </div>
+            <!-- End Fixed Left Share -->
+            
+            <div class="col-md-2"></div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="mainheading">
+                    <div class="row post-top-meta authorpage">
+                        <div class="col-md-10 col-xs-12">
+                            <h1>{{author.name}}</h1>
+                            <span class="author-description">{{author.bio}}</span>
+                           
+                            <!-- follow button (hiding for now)-->
+                            <!-- <a target="_blank" href="https://twitter.com/wowthemesnet" class="btn follow">Follow</a> -->
+                        </div>
+                        <div class="col-md-2 col-xs-12">
+                            <img class="author-thumb" src="{{author.author_image.url}}" alt="{{author.name}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- End Top Author Meta
+    ================================================== -->
+    
+    <!-- Begin Author Posts
+    ================================================== -->
+    <div class="graybg authorpage">
+        <div class="container">
+            <div class="listrecent listrelated">    
+
+                    {% for post in author_post %}
+                    <!-- begin post -->
+                    <div class="authorpostbox">
+                        <div class="card">
+                            <a href="{% url 'post_detail' post.blog_id %}">
+                            <img class="img-fluid img-thumb" src="{{post.featured_image.url}}" height="100px" alt="">
+                            </a>
+                            <div class="card-block">
+                                <h2 class="card-title"><a href="{% url 'post_detail' post.blog_id %}">{{post.title}}</a></h2>
+                                <h4 class="card-text">{{post.content|truncatechars:500}}</h4>
+                                <div class="metafooter">
+                                    <div class="wrapfooter">
+                                        <span class="meta-footer-thumb">
+                                        <a href="{% url 'author_detail' author.user_id %}"><img class="author-thumb" src="{{author.author_image.url}}" alt="Sal"></a>
+                                        </span>
+                                        <span class="author-meta">
+                                        <span class="post-name"><a href="{% url 'author_detail' author.user_id %}">{{author.name}}</a></span><br/>
+                                        <span class="post-date">{{post.posted_date}}</span><span class="dot"></span><span class="post-read"><!-- 6 min read --></span>
+                                        </span>
+                                        <!-- Remove the save button -->
+                                    <!-- 
+                                        <span class="post-read-more">
+                                            <a href="post.html" title="Read Story">
+                                                <svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25">
+                                                    <path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                        </span>
+                                    -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end post -->
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- End Author Posts
+    ================================================== -->
+    {% else %}
+    <div class="container">
+        No Data Present for this author.
+    </div>
+
+    {% endif %}
+
+    <!-- Begin Social Media handles of Codezax Timeline
+    ================================================== -->
+    <div class="container margtop3rem">
+        <a class="twitter-grid" href="{{codezax_handles.youtube}}">Follow us on Youtube</a> &nbsp;
+        <a class="twitter-grid" href="{{codezax_handles.linkedin}}">Follow us on LinkedIn</a> &nbsp;
+        <a class="twitter-grid" href="{{codezax_handles.twitter}}">Follow us on Twitter</a> <br>
+    </div>
+    <!-- End Social Media handles of Codezax Timeline
+    ================================================== -->
+{% endblock content %}

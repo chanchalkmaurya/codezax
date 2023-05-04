@@ -1,0 +1,88 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+<!-- Title of the page-->
+{% block title %} {% endblock title %}
+
+<!--Link CSS files here-->
+{% block css %}
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/mediumish.css" rel="stylesheet">
+{% endblock css %}
+
+
+<!-- Content of body-->
+{% block content %}
+    <!-- Begin Top Author Page
+    ================================================== -->
+    <div class="container">
+        {% for author  in authors %}
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="mainheading">
+                    <div class="row post-top-meta authorpage">
+                        <div class="col-md-10 col-xs-12">
+                            <h1><a href="{% url 'author_detail' author.user_id %}"> {{author.name}} </a></h1>
+                            <span class="author-description">
+                                {% if author.bio == 'NA' %}
+                                    Hi, I'm {{author.name}}
+                                {% else %}
+                                    {{author.bio|truncatechars:60}}
+                                {% endif %}
+                            </span>
+                            
+                            {% for handles in socials %}
+                                {% if handles.author_id == author.user_id %}
+                                    <!-- social media handles-->
+                                    <div class="sociallinks">
+                                        <!-- display instagram icon when url is present for that user-->
+                                        {% if  handles.instagram %}
+                                        <a  target="_blank" href="{{handles.instagram}}"><i class="fa fa-instagram"></i></a> <span class="dot"></span> 
+                                        {% endif %}
+
+                                        <!-- display Twitter icon when url is present for that user-->
+                                        {% if  handles.twitter %}
+                                        <a  target="_blank" href="{{handles.twitter}}"><i class="fa fa-twitter"></i></a> <span class="dot"></span> 
+                                        {% endif %}
+                                        
+                                        <!-- display LinkedIn icon when url is present for that user-->
+                                        {% if  handles.linkedin %}
+                                        <a target="_blank" href="{{handles.linkedin}}"><i class="fa fa-linkedin"></i></a><span class="dot"></span> 
+                                        {% endif %} 
+                                        
+
+                                        <!-- display medium(blog writing website) icon when url is present for that user-->
+                                        {% if  handles.medium %}
+                                        <a target="_blank" href="{{handles.medium}}"><i class="fa fa-medium"></i></a><span class="dot"></span> 
+                                        {% endif %} 
+
+                                        <!-- display github icon when url is present for that user-->
+                                        {% if  handles.github %}
+                                        <a target="_blank" href="{{handles.github}}"><i class="fa fa-github"></i></a>
+                                        {% endif %} 
+                                    </div>
+                                    <!-- Follow button-->
+                                    
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-2 col-xs-12">
+                            <a href="{% url 'author_detail' author.user_id %}" ><img class="author-thumb" src="{{author.author_image.url}}" alt="Sal"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p> No Details are there for this author </p>
+        {% endfor %}
+    </div>
+    <!-- End Top Author Meta
+    ================================================== -->
+    
+{% endblock content %}
